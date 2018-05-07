@@ -15,6 +15,8 @@ memoriaVacia = take 1024 (repeat 0)
 nop :: Microprocesador -> Microprocesador
 nop = aumentarPC 
 
+-- Comentario
+
 --Punto 3.2
 aumentarTresVecesPC :: Microprocesador -> Microprocesador
 aumentarTresVecesPC = nop.nop.nop --Se usa el concepto de composicion
