@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argC, char* argV[]){
+    if(!(argC%2)){
+        printf("ERROR: Se ingreso un numero incorrecto de archivos");
+    }
+    else{
+        int i;
+        for(i=1;i<=(argC-1);i+=2){
+            FILE* archivoTexto;
+            FILE* archivoBinario;
+            archivoTexto = fopen(argV[i],"w");
+            fclose(archivoTexto);
+
+            if(!(archivoTexto = fopen(argV[i],"r"))){
+                printf("No se pudo abrir el archivo %s \n",argV[i]);
+                break;
+            }
+            if(!(archivoBinario = fopen(argV[i+1],"wb"))){
+                printf("No se pudo abrir el archivo %s \n",argV[i+1]);
+                break;
+            }
+            int enteroLeido;
+            float floatLeido;
+            char stringLeido[10];
+            int k;
+            for (k=1;k<=5;k++){
+                fscanf(archivoTexto,"&d",&enteroLeido);
+                fscanf (archivoTexto, "%f", &floatLeido);
+                fscanf (archivoTexto, "%s", stringLeido);
+                fwrite(&enteroLeido,sizeof(int),1,archivoBinario);
+                fwrite(&floatLeido,sizeof(float),1,archivoBinario);
+                fwrite(&stringLeido,sizeof(char),10,archivoBinario);
+            }
+            fclose(archivoTexto);
+            fclose(archivoBinario);
+
+            if(!(archivoBinario = fopen(argV[i+1],"wb"))){
+                printf("No se pudo abrir el archivo %s \n",argV[i+1]);
+                break;
+            }
+            if(!(archivoTexto = fopen(argV[i],"r"))){
+                printf("No se pudo abrir el archivo %s \n",argV[i]);
+                break;
+            }
+        }
+    }
+    return 0;
+}
